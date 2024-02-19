@@ -1,0 +1,46 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'xyz.xxin.silkdecodertest'
+    compileSdk dev.compileSdk
+
+    defaultConfig {
+        applicationId "xyz.xxin.silkdecodertest"
+        minSdk dev.minSdk
+        targetSdk dev.targetSdk
+        versionCode dev.versionCode
+        versionName dev.versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    implementation 'com.github.xxinPro:FileSelector:1.0'
+
+    // 引用本地仓库中的插件
+    // implementation "${mavenLocal.groupId}:${mavenLocal.artifactId}:${mavenLocal.version}"
+
+    implementation project(':decoder')
+}

@@ -1,0 +1,15 @@
+ext {
+    dev = [
+            minSdk          : 21,
+            targetSdk       : 34,
+            compileSdk      : 34,
+            versionCode     : 10,
+            versionName     : "1.0"
+    ]
+
+    mavenLocal = [
+            groupId    : "com.local.xxinPro",
+            artifactId : "SilkDecoder",
+            version    : "1.0"
+    ]
+}

@@ -1,0 +1,15 @@
+
+//用于本地调试
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId = mavenLocal.groupId        // 用户名
+                artifactId = mavenLocal.artifactId  // 仓库名
+                version = mavenLocal.version        // 版本
+            }
+        }
+    }
+}

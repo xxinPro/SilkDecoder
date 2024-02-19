@@ -1,0 +1,63 @@
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'      // 引入maven-publish插件
+}
+
+apply from: '../maven.gradle'
+
+android {
+    namespace 'xyz.xxin.silkdecoder'
+    compileSdk dev.compileSdk
+
+    defaultConfig {
+        minSdk dev.minSdk
+        targetSdk dev.targetSdk
+
+        versionCode dev.versionCode
+        versionName dev.versionName
+
+        externalNativeBuild {
+            cmake {
+                // -std=c++11:  指定使用C++11标准编译
+                // -frtti:      开启运行时类型信息（RTTI）
+                // -fexceptions:开启异常处理
+                // -Werror:     将所有警告视为错误
+                cppFlags '-std=c++11 -frtti -fexceptions -Werror -DANDROID -DSTDC_HEADERS  -Werror'
+                cFlags '-frtti -fexceptions -Werror -DANDROID -DSTDC_HEADERS  -Werror'
+            }
+
+            ndk {
+                abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    // 指定NDK版本
+    ndkVersion "26.1.10909125"
+
+    externalNativeBuild {
+        cmake {
+            // 指定cmake构建脚本位置
+            path file('src/main/cpp/CMakeLists.txt')
+            // 指定cmake构建脚本的版本
+            version '3.22.1'
+        }
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+}
