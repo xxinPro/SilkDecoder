@@ -171,7 +171,7 @@ int pcm2mp3(String pcmFilePath, String mp3FilePath, int sampleRate) {
         } else {
             writeLen = lame_encode_buffer(lame, pcmBuffer, nullptr, readLen, mp3Buffer, MP3_SIZE);
         }
-        fwrite(mp3Buffer, 1, static_cast<size_t>(writeLen), mp3File);
+        fwrite(mp3Buffer, 1, writeLen, mp3File);
     } while (readLen != 0);
 
     // 释放lame
