@@ -45,8 +45,10 @@ public class MainActivity extends AppCompatActivity {
 
                 String pcmFilePath = silkFile.getParentFile().getAbsolutePath() + "/" + getFileName(silkFile) + "_temp.pcm";
                 String mp3FilePath = silkFile.getParentFile().getAbsolutePath() + "/" + getFileName(silkFile) + ".mp3";
+                String wavFilePath = silkFile.getParentFile().getAbsolutePath() + "/" + getFileName(silkFile) + ".wav";
 
-                boolean result = DecodeNative.silk2mp3(silkFilePath, pcmFilePath, mp3FilePath, 24000);
+                // boolean result = DecodeNative.silk2mp3(silkFilePath, pcmFilePath, mp3FilePath, 24000, 128);
+                boolean result = DecodeNative.silk2wav(silkFilePath, pcmFilePath, wavFilePath, 24000);
                 if (result) {
                     Toast.makeText(MainActivity.this, "转换成功", Toast.LENGTH_SHORT).show();
                 } else {

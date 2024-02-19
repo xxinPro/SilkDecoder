@@ -59,10 +59,10 @@ typedef enum vbr_mode_e {
 
 /* MPEG modes */
 typedef enum MPEG_mode_e {
-  STEREO = 0,
-  JOINT_STEREO,
+  STEREO = 0,     /* 立体声（双声道）模式 */
+  JOINT_STEREO,   /* 联合立体声模式 */
   DUAL_CHANNEL,   /* LAME doesn't supports this! */
-  MONO,
+  MONO,           /* 单声道模式 */
   NOT_SET,
   MAX_INDICATOR   /* Don't use this! It's used for sanity checks. */
 } MPEG_mode;

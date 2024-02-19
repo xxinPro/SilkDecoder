@@ -122,14 +122,70 @@ int silk2pcm(String silkFilePath, String pcmFilePath, int sampleRate) {
     return 1;
 }
 
+
+/**
+ * 将pcm文件转换成wav文件
+ * @param pcmFilePath   pcm文件路径
+ * @param wavFilePath   wav文件路径
+ * @param sampleRate    采样率
+ * @return 0:转换失败；1:转换成功
+ */
+int pcm2wav(String pcmFilePath, String wavFilePath, int sampleRate) {
+    FILE *pcmFile = fopen(pcmFilePath, "rb");
+    if (pcmFile == NULL) {
+        LOG_E("Error: could not open file %s", pcmFilePath);
+        return 0;
+    }
+
+    fseek(pcmFile, 0, SEEK_END);
+    long pcmFileSize = ftell(pcmFile);
+    rewind(pcmFile);
+
+    FILE *wavFile = fopen(wavFilePath, "wb");
+    if (wavFile == NULL) {
+        LOG_E("Error: could not open file %s", pcmFilePath);
+        return 0;
+    }
+
+    WavHeader wavHeader;
+    strncpy(wavHeader.chunkId, "RIFF", 4);
+    wavHeader.chunkSize = 36 + pcmFileSize;
+    strncpy(wavHeader.format, "WAVE", 4);
+    strncpy(wavHeader.subchunk1Id, "fmt ", 4);
+    wavHeader.subchunk1Size = 16;
+    wavHeader.audioFormat = 1;  // PCM编码
+    wavHeader.numChannels = 1;
+    wavHeader.sampleRate = sampleRate;
+    wavHeader.bitsPerSample = 16;
+    wavHeader.byteRate = wavHeader.sampleRate * wavHeader.numChannels * wavHeader.bitsPerSample / 8;
+    wavHeader.blockAlign = wavHeader.numChannels * wavHeader.bitsPerSample / 8;
+    strncpy(wavHeader.subchunk2Id, "data", 4);
+    wavHeader.subchunk2Size = pcmFileSize - 36;
+
+    fwrite(&wavHeader, sizeof(struct WavHeader), 1, wavFile);
+
+    // 写入PCM数据
+    void *pcmData = malloc(pcmFileSize);
+    fread(pcmData, pcmFileSize, 1, pcmFile);
+    fwrite(pcmData, pcmFileSize, 1, wavFile);
+
+    free(pcmData);
+    fclose(pcmFile);
+    fclose(wavFile);
+
+    return 1;
+}
+
+
 /**
  * 将pcm文件转换成mp3文件
  * @param pcmFilePath   pcm文件路径
  * @param mp3FilePath   mp3文件路径
  * @param sampleRate    采样率
+ * @param bitrate       比特率
  * @return 0:转换失败；1:转换成功
  */
-int pcm2mp3(String pcmFilePath, String mp3FilePath, int sampleRate) {
+int pcm2mp3(String pcmFilePath, String mp3FilePath, int sampleRate, int bitrate) {
     int readLen, writeLen;
     int PCM_SIZE = 8192;
     int MP3_SIZE = 8192;
@@ -150,17 +206,19 @@ int pcm2mp3(String pcmFilePath, String mp3FilePath, int sampleRate) {
     }
 
     lame_t lame = lame_init();
-    // 设置声道，跟实例化AudioRecord的参数的channelConfig声道配置保持一致
-    lame_set_num_channels(lame, 1);
-    // 设置采样率
+    // 设置输入音频的采样率
     lame_set_in_samplerate(lame, sampleRate);
-    // 设置比特率xxx kbps
-    lame_set_brate(lame, 128);
-    // 设置模式。立体声或者单声道
+    // 设置输出 MP3 文件的采样率
+    lame_set_out_samplerate(lame, sampleRate);
+    // 设置比特率，以千比特每秒（kbps）为单位
+    lame_set_brate(lame, bitrate);
+    // 设置声道数
+    lame_set_num_channels(lame, 1);
+    // 设置音频编码模式，此处为单声道模式
     lame_set_mode(lame, MONO);
-    // 设置质量影响压缩算法，值范围为0-9, 0质量最好速度最慢，9质量最差速度最快。
-    // 源码建议：3:near-best quality,not too slow; 5:good quality,fast; 7:ok quality,really fast
-    lame_set_quality(lame, 5);
+    // 设置编码质量，有效值范围0.0到9.0, 取值越高音质越好，但是输出的mp3文件更大，编码速度也会下降
+    // 建议取值：3:质量很好，速度还可以; 5:质量较好，速度快; 7:质量还可以，速度很快
+    lame_set_quality(lame, 3);
     // 初始化参数
     lame_init_params(lame);
 
