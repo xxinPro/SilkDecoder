@@ -1,14 +1,14 @@
 package xyz.xxin.silkdecodertest;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.File;
 import java.util.List;
@@ -22,7 +22,8 @@ import xyz.xxin.silkdecoder.DecodeNative;
 public class MainActivity extends AppCompatActivity {
     private Button start;
     private Button select_file;
-    private EditText edit_text;
+    private TextView file_path;
+    private RadioGroup target_format;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,18 +38,27 @@ public class MainActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String silkFilePath = edit_text.getText().toString();
-                if (TextUtils.isEmpty(silkFilePath))
+                String silkFilePath = file_path.getText().toString();
+                if (TextUtils.isEmpty(silkFilePath)) {
+                    Toast.makeText(MainActivity.this, "请先选择文件", Toast.LENGTH_SHORT).show();
                     return;
+                }
 
                 File silkFile = new File(silkFilePath);
 
-                String pcmFilePath = silkFile.getParentFile().getAbsolutePath() + "/" + getFileName(silkFile) + "_temp.pcm";
+                String pcmFilePath = silkFile.getParentFile().getAbsolutePath() + "/" + getFileName(silkFile) + ".pcm";
                 String mp3FilePath = silkFile.getParentFile().getAbsolutePath() + "/" + getFileName(silkFile) + ".mp3";
                 String wavFilePath = silkFile.getParentFile().getAbsolutePath() + "/" + getFileName(silkFile) + ".wav";
 
-                // boolean result = DecodeNative.silk2mp3(silkFilePath, pcmFilePath, mp3FilePath, 24000, 128);
-                boolean result = DecodeNative.silk2wav(silkFilePath, pcmFilePath, wavFilePath, 24000);
+                boolean result;
+
+                int checkedRadioButtonId = target_format.getCheckedRadioButtonId();
+                if (checkedRadioButtonId == R.id.mp3) {
+                    result = DecodeNative.silk2mp3(silkFilePath, pcmFilePath, mp3FilePath, 24000, 128);
+                } else {
+                    result = DecodeNative.silk2wav(silkFilePath, pcmFilePath, wavFilePath, 24000);
+                }
+
                 if (result) {
                     Toast.makeText(MainActivity.this, "转换成功", Toast.LENGTH_SHORT).show();
                 } else {
@@ -69,9 +79,9 @@ public class MainActivity extends AppCompatActivity {
                             public void onResult(List<FileBean> result) {
                                 FileBean fileBean = result.get(0);
                                 if (fileBean.isFileType()) {
-                                    edit_text.setText(fileBean.getFile().getAbsolutePath());
+                                    file_path.setText(fileBean.getFile().getAbsolutePath());
                                 } else {
-                                    edit_text.setText(SAFUtil.uriToPath(fileBean.getDocumentFile()));
+                                    file_path.setText(SAFUtil.uriToPath(fileBean.getDocumentFile()));
                                 }
                             }
 
@@ -87,7 +97,8 @@ public class MainActivity extends AppCompatActivity {
     private void findView() {
         start = findViewById(R.id.start);
         select_file = findViewById(R.id.select_file);
-        edit_text = findViewById(R.id.edit_text);
+        file_path = findViewById(R.id.file_path);
+        target_format = findViewById(R.id.target_format);
     }
 
     private String getFileName(File file) {

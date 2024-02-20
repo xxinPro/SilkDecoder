@@ -131,25 +131,29 @@ int silk2pcm(String silkFilePath, String pcmFilePath, int sampleRate) {
  * @return 0:转换失败；1:转换成功
  */
 int pcm2wav(String pcmFilePath, String wavFilePath, int sampleRate) {
+    // 打开PCM文件
     FILE *pcmFile = fopen(pcmFilePath, "rb");
     if (pcmFile == NULL) {
         LOG_E("Error: could not open file %s", pcmFilePath);
         return 0;
     }
 
+    // 计算PCM文件大小
     fseek(pcmFile, 0, SEEK_END);
     long pcmFileSize = ftell(pcmFile);
     rewind(pcmFile);
 
+    // 打开WAV文件
     FILE *wavFile = fopen(wavFilePath, "wb");
     if (wavFile == NULL) {
         LOG_E("Error: could not open file %s", pcmFilePath);
         return 0;
     }
 
+    // 需要添加的WAV文件头
     WavHeader wavHeader;
     strncpy(wavHeader.chunkId, "RIFF", 4);
-    wavHeader.chunkSize = 36 + pcmFileSize;
+    wavHeader.chunkSize = pcmFileSize + 36;
     strncpy(wavHeader.format, "WAVE", 4);
     strncpy(wavHeader.subchunk1Id, "fmt ", 4);
     wavHeader.subchunk1Size = 16;
@@ -160,8 +164,9 @@ int pcm2wav(String pcmFilePath, String wavFilePath, int sampleRate) {
     wavHeader.byteRate = wavHeader.sampleRate * wavHeader.numChannels * wavHeader.bitsPerSample / 8;
     wavHeader.blockAlign = wavHeader.numChannels * wavHeader.bitsPerSample / 8;
     strncpy(wavHeader.subchunk2Id, "data", 4);
-    wavHeader.subchunk2Size = pcmFileSize - 36;
+    wavHeader.subchunk2Size = pcmFileSize;
 
+    // 写入WAV文件头
     fwrite(&wavHeader, sizeof(struct WavHeader), 1, wavFile);
 
     // 写入PCM数据

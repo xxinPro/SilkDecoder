@@ -7,24 +7,51 @@
     android:gravity="center"
     tools:context=".MainActivity">
 
+    <TextView
+        android:hint="请选择文件"
+        android:id="@+id/file_path"
+        android:background="@android:color/darker_gray"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:text="选择文件"
+        android:id="@+id/select_file"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <LinearLayout
+        android:gravity="center"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/edit_text"
-            android:hint="输入文件路径"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:text="选择文件"
-            android:id="@+id/select_file"
+        <TextView
+            android:text="转换为:"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-
+        <RadioGroup
+            android:id="@+id/target_format"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:text="mp3"
+                android:id="@+id/mp3"
+                android:checked="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <RadioButton
+                android:text="wav"
+                android:id="@+id/wav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RadioGroup>
     </LinearLayout>
 
     <Button

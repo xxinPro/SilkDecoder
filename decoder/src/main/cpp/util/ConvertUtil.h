@@ -19,10 +19,10 @@
 // WAV文件头结构
 typedef struct WavHeader {
     char            chunkId[4];     // "RIFF"标识
-    unsigned int    chunkSize;      // 文件总大小（包括文件头）
+    unsigned int    chunkSize;      // wav文件大小（不包括"RIFF"标识大小和自身大小，共8个字节）
     char            format[4];      // "WAVE"标识
-    char            subchunk1Id[4]; // "fmt "标识
-    unsigned int    subchunk1Size;  // fmt块的大小
+    char            subchunk1Id[4]; // "fmt "标识（注意空格）
+    unsigned int    subchunk1Size;  // fmt块的大小，固定值16
     unsigned short  audioFormat;    // 音频格式（PCM为1）
     unsigned short  numChannels;    // 设置声道数，单声道(Mono)为1，双声道(Stereo)为2
     unsigned int    sampleRate;     // 采样率
@@ -30,7 +30,7 @@ typedef struct WavHeader {
     unsigned short  blockAlign;     // 每个样本的字节数
     unsigned short  bitsPerSample;  // 每个样本的位数
     char            subchunk2Id[4]; // "data"标识
-    unsigned int    subchunk2Size;  // 数据块的大小
+    unsigned int    subchunk2Size;  // wav数据块大小（即pcm文件大小）
 } WavHeader;
 
 
