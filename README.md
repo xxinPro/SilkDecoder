@@ -29,7 +29,7 @@ dependencyResolutionManagement {
 }
 ```
 
-远程仓库配置之后，即可在模块的`build.gradle`中引入`FileSelector`
+远程仓库配置之后，即可在模块的`build.gradle`中引入`SilkDecoder`
 
 ```sh
 dependencies {

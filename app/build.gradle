@@ -39,6 +39,8 @@ dependencies {
 
     implementation 'com.github.xxinPro:FileSelector:1.0'
 
+    // 引用远程仓库中的插件
+    // implementation 'com.github.xxinPro:SilkDecoder:1.0'
     // 引用本地仓库中的插件
     // implementation "${mavenLocal.groupId}:${mavenLocal.artifactId}:${mavenLocal.version}"
     // 引用项目模块
