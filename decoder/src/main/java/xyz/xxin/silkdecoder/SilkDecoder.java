@@ -72,6 +72,16 @@ public class SilkDecoder {
      * 将silk解码为pcm
      * @param silkFilePath  silk文件路径
      * @param pcmFilePath   pcm文件路径
+     * @return  返回转换结果；true:成功；false:失败
+     */
+    public static boolean decodeToPcm(String silkFilePath, String pcmFilePath) {
+        return decodeToPcm(silkFilePath, pcmFilePath, 24000);
+    }
+
+    /**
+     * 将silk解码为pcm
+     * @param silkFilePath  silk文件路径
+     * @param pcmFilePath   pcm文件路径
      * @param sampleRate    采样率，有效值：8000、12000、16000、24000、32000、44100、48000
      * @return  返回转换结果；true:成功；false:失败
      */
