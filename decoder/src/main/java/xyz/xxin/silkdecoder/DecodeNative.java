@@ -5,6 +5,8 @@ public class DecodeNative {
         System.loadLibrary("decoder");
     }
 
+    private DecodeNative() {}
+
     /**
      * silk转换pcm，支持微信、QQ
      * 如果转换成功，将会生成对应路径的pcm文件
@@ -13,7 +15,7 @@ public class DecodeNative {
      * @param sampleRate    采样率，有效值：8000、12000、16000、24000、32000、44100、48000
      * @return  返回转换结果；true:成功；false:失败
      */
-    public static native boolean silk2pcm(String silkFilePath, String pcmFilePath, int sampleRate);
+    protected static native boolean silk2pcm(String silkFilePath, String pcmFilePath, int sampleRate);
 
     /**
      * silk转换wav，支持微信、QQ
@@ -24,7 +26,7 @@ public class DecodeNative {
      * @param sampleRate    采样率，有效值：8000、12000、16000、24000、32000、44100、48000
      * @return  返回转换结果；true:成功；false:失败
      */
-    public static native boolean silk2wav(String silkFilePath, String pcmFilePath, String wavFilePath, int sampleRate);
+    protected static native boolean silk2wav(String silkFilePath, String pcmFilePath, String wavFilePath, int sampleRate);
 
     /**
      * silk转换mp3，支持微信、QQ
@@ -36,5 +38,5 @@ public class DecodeNative {
      * @param bitrate       比特率，通常取：64、128、192
      * @return  返回转换结果；true:成功；false:失败
      */
-    public static native boolean silk2mp3(String silkFilePath, String pcmFilePath, String mp3FilePath, int sampleRate, int bitrate);
+    protected static native boolean silk2mp3(String silkFilePath, String pcmFilePath, String mp3FilePath, int sampleRate, int bitrate);
 }

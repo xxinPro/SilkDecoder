@@ -40,7 +40,7 @@ dependencies {
     implementation 'com.github.xxinPro:FileSelector:1.0'
 
     // 引用本地仓库中的插件
-    // implementation "${mavenLocal.groupId}:${mavenLocal.artifactId}:${mavenLocal.version}"
-
-    implementation project(':decoder')
+    implementation "${mavenLocal.groupId}:${mavenLocal.artifactId}:${mavenLocal.version}"
+    // 引用项目模块
+    // implementation project(':decoder')
 }

@@ -17,7 +17,7 @@ import xyz.xxin.fileselector.FileSelector;
 import xyz.xxin.fileselector.beans.FileBean;
 import xyz.xxin.fileselector.interfaces.OnResultCallbackListener;
 import xyz.xxin.fileselector.utils.SAFUtil;
-import xyz.xxin.silkdecoder.DecodeNative;
+import xyz.xxin.silkdecoder.SilkDecoder;
 
 public class MainActivity extends AppCompatActivity {
     private Button start_decode;
@@ -54,9 +54,11 @@ public class MainActivity extends AppCompatActivity {
 
                 int checkedRadioButtonId = target_format.getCheckedRadioButtonId();
                 if (checkedRadioButtonId == R.id.mp3) {
-                    result = DecodeNative.silk2mp3(silkFilePath, pcmFilePath, mp3FilePath, 24000, 128);
+                    result = SilkDecoder.decodeToMp3(silkFilePath, mp3FilePath, 24000, 128);
+                } else if (checkedRadioButtonId == R.id.wav){
+                    result = SilkDecoder.decodeToWav(silkFilePath, wavFilePath, 24000);
                 } else {
-                    result = DecodeNative.silk2wav(silkFilePath, pcmFilePath, wavFilePath, 24000);
+                    result = SilkDecoder.decodeToPcm(silkFilePath, pcmFilePath, 24000);
                 }
 
                 if (result) {
