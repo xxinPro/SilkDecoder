@@ -46,7 +46,7 @@ int silk2pcm(String silkFilePath, String pcmFilePath, int sampleRate) {
     }
 
     // 设置采样率
-    if (sampleRate == 0) {
+    if (sampleRate <= 0) {
         sampleRate = 24000;
     }
     decodeControl.API_sampleRate = sampleRate;

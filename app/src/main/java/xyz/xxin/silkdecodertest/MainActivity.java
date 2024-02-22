@@ -20,7 +20,7 @@ import xyz.xxin.fileselector.utils.SAFUtil;
 import xyz.xxin.silkdecoder.DecodeNative;
 
 public class MainActivity extends AppCompatActivity {
-    private Button start;
+    private Button start_decode;
     private Button select_file;
     private TextView file_path;
     private RadioGroup target_format;
@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addEvent() {
-        // 开始转换
-        start.setOnClickListener(new View.OnClickListener() {
+        // 开始解码转换
+        start_decode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String silkFilePath = file_path.getText().toString();
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void findView() {
-        start = findViewById(R.id.start);
+        start_decode = findViewById(R.id.start_decode);
         select_file = findViewById(R.id.select_file);
         file_path = findViewById(R.id.file_path);
         target_format = findViewById(R.id.target_format);

@@ -55,8 +55,8 @@
     </LinearLayout>
 
     <Button
-        android:text="开始转换"
-        android:id="@+id/start"
+        android:text="开始解码"
+        android:id="@+id/start_decode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
